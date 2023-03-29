@@ -5,9 +5,30 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="script.js" defer></script>
+  <link rel="stylesheet" href="styles.css">
   <title>Document</title>
 </head>
 <body>
-  
+    <div id="container">
+
+    </div>
+
+    <form action="" id="library_form">
+        <label for="book_title">Book title:</label>
+        <input type="text" name="book_title" id="book_title">
+        <br>
+        <label for="author_name">Author name:</label>
+        <input type="text" name="author_name" id="author_name">
+        <br>
+        <label for="pages">Page count:</label>
+        <input type="text" name="pages" id="pages">
+        <br>
+        <input type="radio" id="read" name="read_status" value=true>
+        <label for="read">I have read this book.</label>
+        <input type="radio" id="read" name="read_status" value=false>
+        <label for="read">I have not read this book.</label>
+        <button type="submit" value="Submit">Add book</button>
+        <button type="reset">Reset form</button>
+    </form>
 </body>
 </html>
