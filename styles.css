@@ -26,7 +26,17 @@ button {
     padding: 14px 0;
     margin: 10px 0;
     border: none;
-    cursor: grabbing;
+    cursor: pointer;
+    width: 100%;
+}
+
+#remove-button {
+    background-color: #8ebf42;
+    color: white;
+    padding: 0px;
+    margin: 0px;
+    border: none;
+    cursor: pointer;
     width: 100%;
 }
 
