@@ -71,6 +71,7 @@ bookForm.addEventListener('submit', (e) => {
 });
 
 
+
 function populateDisplay() {
     myLibrary.forEach(item => {
         var row = table.insertRow(-1);
@@ -83,22 +84,14 @@ function populateDisplay() {
         cell2.textContent = (item[Object.keys(item)[1]]);
         cell3.textContent = (item[Object.keys(item)[2]]);
         cell4.textContent = (item[Object.keys(item)[3]]);
+        cell5.id = `${item.index}`;
         row.appendChild(cell1);
         row.appendChild(cell2);
         row.appendChild(cell3);
         row.appendChild(cell4);
         row.appendChild(cell5);
         table.appendChild(row);
-        
-        let button = document.createElement('button');
-        button.id = 'remove-button';
-        button.data = item.index;
-        button.textContent = "remove";
-        cell5.appendChild(button);
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            alert(`the index number is: ${button.data}`);
-        })
+        addRemoveButton(item.index);
     })
 }
 
@@ -114,22 +107,26 @@ function updateDisplay() {
     cell2.textContent = latestBook[0].author; 
     cell3.textContent = latestBook[0].pages;
     cell4.textContent = latestBook[0].read;
+    cell5.id = latestBook[0].index;
     row.appendChild(cell1);
     row.appendChild(cell2);
     row.appendChild(cell3);
     row.appendChild(cell4);
     row.appendChild(cell5);
-    table.appendChild(row);    
+    table.appendChild(row);
+    addRemoveButton(latestBook[0].index);
+}
 
+populateDisplay();
+
+function addRemoveButton(index) {
     let button = document.createElement('button');
     button.id = 'remove-button';
-    button.textContent = 'remove';
-    button.data = latestBook[0].index;
-    cell5.appendChild(button);
+    button.textContent = 'Remove';
+    button.data = index;
     button.addEventListener('click', (e) => {
         e.preventDefault();
         alert(`the index number is: ${button.data}`);
     })
+    document.getElementById(index).appendChild(button);
 }
-
-populateDisplay();
