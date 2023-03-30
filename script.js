@@ -3,30 +3,35 @@ let myLibrary = [
         title:      'Americanah',
         author:     'Chimamanda Ngozi Adichie',
         pages:      402,
-        read:       true
+        read:       true,
+        index:      0,
     },
     {
         title:      'In the Skin of a Lion',
         author:     'Michael Ondaatje',
         pages:      250,
-        read:       true
+        read:       true,
+        index:      1,
     },
     {
         title:      'Moon of the Crusted Snow',
         author:     'Waubgeshig Rice',
         pages:      231,
-        read:       true
-    }
+        read:       true,
+        index:      2,
+    },
 ];
 
 const table = document.querySelector('#table');
+const bookForm = document.querySelector('#library_form');
+
 let row = document.createElement('tr');
 let cell1 = document.createElement('td');
 let cell2 = document.createElement('td');
 let cell3 = document.createElement('td');
 let cell4 = document.createElement('td');
+let cell5 = document.createElement('td');
 
-const bookForm = document.querySelector('#library_form');
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -37,8 +42,14 @@ function Book(title, author, pages, read) {
 
 function addBookToLibrary(title, author, pages, read) {
     const newBook = new Book(title, author, pages, read);
+    newBook.index = generateNewIndex();
     myLibrary.push(newBook)
     updateDisplay();
+}
+
+function generateNewIndex() {
+    var lastBook = myLibrary.slice(-1);
+    return newIndex = parseInt(lastBook[0].index + 1);
 }
 
 function checkForDuplicate(title, author, pages, read) {
@@ -59,6 +70,7 @@ bookForm.addEventListener('submit', (e) => {
     checkForDuplicate(formTitle, formAuthor, formPages, formRead);
 });
 
+
 function populateDisplay() {
     myLibrary.forEach(item => {
         var row = table.insertRow(-1);
@@ -66,6 +78,7 @@ function populateDisplay() {
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
         cell1.textContent = (item[Object.keys(item)[0]]);
         cell2.textContent = (item[Object.keys(item)[1]]);
         cell3.textContent = (item[Object.keys(item)[2]]);
@@ -74,7 +87,18 @@ function populateDisplay() {
         row.appendChild(cell2);
         row.appendChild(cell3);
         row.appendChild(cell4);
+        row.appendChild(cell5);
         table.appendChild(row);
+        
+        let button = document.createElement('button');
+        button.id = 'remove-button';
+        button.data = item.index;
+        button.textContent = "remove";
+        cell5.appendChild(button);
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert(`the index number is: ${button.data}`);
+        })
     })
 }
 
@@ -85,6 +109,7 @@ function updateDisplay() {
     var cell2 = row.insertCell(1);
     var cell3 = row.insertCell(2);
     var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
     cell1.textContent = latestBook[0].title; 
     cell2.textContent = latestBook[0].author; 
     cell3.textContent = latestBook[0].pages;
@@ -93,7 +118,18 @@ function updateDisplay() {
     row.appendChild(cell2);
     row.appendChild(cell3);
     row.appendChild(cell4);
-    table.appendChild(row);
+    row.appendChild(cell5);
+    table.appendChild(row);    
+
+    let button = document.createElement('button');
+    button.id = 'remove-button';
+    button.textContent = 'remove';
+    button.data = latestBook[0].index;
+    cell5.appendChild(button);
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert(`the index number is: ${button.data}`);
+    })
 }
 
 populateDisplay();
