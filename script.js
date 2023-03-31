@@ -81,6 +81,7 @@ bookForm.addEventListener('keydown', (e) => {
 // Template table elements.
 
 let row = document.createElement('tr');
+let cell = document.createElement('td');
 let cell1 = document.createElement('td');
 let cell2 = document.createElement('td');
 let cell3 = document.createElement('td');
@@ -142,8 +143,6 @@ function populateTable() {
         var index = myLibrary.findIndex(x => x.author === item.author && 
             x.title === item.title);
         populateRow(item, index);
-        addRemoveButton(index);
-        addTrueFalseButton(item.read, index);
     })
 }
 
@@ -155,8 +154,6 @@ function updateTable() {
     var index = myLibrary.findIndex(x => x.author === latestBook[0].author && 
         x.title === latestBook[0].title);
     populateRow(latestBook[0], index);
-    addRemoveButton(index);
-    addTrueFalseButton(latestBook[0].read, index);
 }
 
 // Returns a new row for the table, with content 
@@ -164,6 +161,22 @@ function updateTable() {
 
 function populateRow(item, index) {
     var row = table.insertRow(-1);
+    var thisBook = Object.values(item);
+    console.log(thisBook);
+    for (i in thisBook) {
+        console.log(thisBook[i]);
+        var cell = row.insertCell(i);
+        if (typeof thisBook[i] === 'boolean') {
+            addTrueFalseButton(thisBook[i], index, cell);
+        } else if (typeof thisBook[i] === 'string' || 'number') {
+            cell.textContent = thisBook[i];
+        }
+    }
+    var removeButtonCell = row.insertCell(Object.keys(item).length);
+    removeButtonCell.id = `remove ${index}`;
+    addRemoveButton(index);
+
+/*
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);
     var cell3 = row.insertCell(2);
@@ -180,6 +193,28 @@ function populateRow(item, index) {
     row.appendChild(cell4);
     row.appendChild(cell5);
     table.appendChild(row);
+    addTrueFalseButton(item.read, index);
+    addRemoveButton(index);
+    */
+}
+
+// Adds a read-status button to the table.
+
+function addTrueFalseButton(read, index, cell) {
+    cell.id = `true-false ${index}`;
+    let button = document.createElement('button');
+    button.id = 'read-status';
+    if (read) {
+        button.textContent = "Read";
+    } else {
+        button.textContent = "Unread";
+        button.style.backgroundColor = 'orange';
+    };
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        readStatusToggle(read, index);
+    })
+    document.getElementById(`true-false ${index}`).appendChild(button);
 }
 
 // Adds a remove-book button to the table.
@@ -194,24 +229,6 @@ function addRemoveButton(index) {
         removeItem(index);
     })
     document.getElementById(`remove ${index}`).appendChild(button);
-}
-
-// Adds a read-status button to the table.
-
-function addTrueFalseButton(read, index) {
-    let button = document.createElement('button');
-    button.id = 'read-status';
-    if (read) {
-        button.textContent = "Read";
-    } else {
-        button.textContent = "Unread";
-        button.style.backgroundColor = 'orange';
-    };
-    button.addEventListener('click', (e) => {
-        e.preventDefault();
-        readStatusToggle(read, index);
-    })
-    document.getElementById(`true-false ${index}`).appendChild(button);
 }
 
 // Toggles the read-status button by changing read-status
