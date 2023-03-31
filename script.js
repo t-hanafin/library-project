@@ -116,8 +116,7 @@ function addRemoveButton(index) {
     button.data = index;
     button.addEventListener('click', (e) => {
         e.preventDefault();
-        alert(`the index number is: ${button.data}`);
-        // removeItem(index);
+        removeItem(index);
     })
     document.getElementById(index).appendChild(button);
 }
@@ -132,15 +131,27 @@ function addTrueFalseButton(read, index) {
     };
     button.addEventListener('click', (e) => {
         e.preventDefault();
-        if (read) {
-            myLibrary[index].read = false;
-            populateTable();
-        } else {
-            myLibrary[index].read = true;
-            populateTable();
-        }
+        readStatusToggle(read, index);
     })
     document.getElementById(`true-false ${index}`).appendChild(button);
+}
+
+function readStatusToggle(read, index) {
+    if (read) {
+        myLibrary[index].read = false;
+    } else {
+        myLibrary[index].read = true;
+    }
+    populateTable();
+}
+
+function removeItem(index) {
+    if (index === 0) {
+        const placeholderLibrary = myLibrary.splice(index, index + 1);
+    } else {
+        const placeholderLibrary = myLibrary.splice(index, index);
+    }
+    populateTable();
 }
 
 populateTable();
