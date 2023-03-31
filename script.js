@@ -3,49 +3,52 @@ let myLibrary = [
         title:      'Americanah',
         author:     'Chimamanda Ngozi Adichie',
         pages:      402,
-        readStatus: true,
+        status:     true,
     },
     {
         title:      'Moon of the Crusted Snow',
         author:     'Waubgeshig Rice',
         pages:      231,
-        readStatus: false,
+        status:     false,
     },
+
+    /*
     {
         title:      'In the Skin of a Lion',
         author:     'Michael Ondaatje',
         pages:      250,
-        readStatus: true,
+        status:     true,
     },
     {
         title:      'Orlando',
         author:     'Virginia Woolf',
         pages:      321,
-        readStatus: false,
+        status:     false,
     },
     {
         title:      'Don Quixote',
         author:     'Miguel de Cervantes',
         pages:      924,
-        readStatus: true,
+        status:     true,
     },
     {
         title:      'Our Aesthetic Categories',
         author:     'Sianne Ngai',
         pages:      501,
-        readStatus: true,
+        status:     true,
     },
     {
         title:      'The Second Sex',
         author:     'Simone de Beauvoir',
         pages:      629,
-        readStatus: true,
-    },
+        status:     true,
+    }, */
 ];
 
 // Grabs relevant HTML elements for use. 
 
-const table = document.querySelector('#library-table')
+const tableHeaderRow = document.querySelector('thead');
+const table = document.querySelector('#library-table');
 const bookForm = document.querySelector('#library-form');
 const container = document.querySelector('.container');
 const popUpForm = document.getElementById('popUp');
@@ -80,17 +83,17 @@ bookForm.addEventListener('keydown', (e) => {
 
 // Book object.
 
-function Book(title, author, pages, readStatus) {
+function Book(title, author, pages, status) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.readStatus = readStatus; // True or false.
+    this.status = status; // True or false.
 }
 
 // Adds book to library, calls updateTable function.
 
-function addBookToLibrary(title, author, pages, readStatus) {
-    const newBook = new Book(title, author, pages, readStatus);
+function addBookToLibrary(title, author, pages, status) {
+    const newBook = new Book(title, author, pages, status);
     myLibrary.push(newBook)
     updateTable();
 }
@@ -128,7 +131,9 @@ bookForm.addEventListener('submit', (e) => {
 // Also used to refresh the entire table.
 
 function populateTable() {
+    tableHeaderRow.innerHTML = '';
     table.innerHTML = '';
+    populateTableHeaders();
     myLibrary.forEach(item => {
         var index = myLibrary.findIndex(x => x.author === item.author && 
             x.title === item.title);
@@ -151,7 +156,6 @@ function populateRow(item, index) {
     var row = table.insertRow(-1);
     var thisBook = Object.values(item);
     for (i in thisBook) {
-        console.log(thisBook[i]);
         var cell = row.insertCell(i);
         if (typeof thisBook[i] === 'boolean') {
             addReadStatusButton(thisBook[i], index, cell);
@@ -166,11 +170,11 @@ function populateRow(item, index) {
 
 // Adds a 'read status' button to the table.
 
-function addReadStatusButton(readStatus, index, cell) {
+function addReadStatusButton(status, index, cell) {
     cell.id = `true-false ${index}`;
     let button = document.createElement('button');
     button.id = 'read-status';
-    if (readStatus) {
+    if (status) {
         button.textContent = "Read";
     } else {
         button.textContent = "Unread";
@@ -178,7 +182,7 @@ function addReadStatusButton(readStatus, index, cell) {
     };
     button.addEventListener('click', (e) => {
         e.preventDefault();
-        readStatusToggle(readStatus, index);
+        readStatusToggle(status, index);
     })
     document.getElementById(cell.id).appendChild(button);
 }
@@ -197,13 +201,13 @@ function addRemoveBookButton(index) {
     document.getElementById(`remove ${index}`).appendChild(button);
 }
 
-// Changes readStatus of a book in the library, then refreshes the table.
+// Changes status of a book in the library, then refreshes the table.
 
-function readStatusToggle(readStatus, index) {
-    if (readStatus) {
-        myLibrary[index].readStatus = false;
+function readStatusToggle(status, index) {
+    if (status) {
+        myLibrary[index].status = false;
     } else {
-        myLibrary[index].readStatus = true;
+        myLibrary[index].status = true;
     }
     populateTable();
 }
@@ -214,6 +218,20 @@ function removeItem(index) {
     populateTable();
 }
 
-// Shows what's in the library on load. 
+// Populates the header row.
+
+function populateTableHeaders(item, index) {
+    var row = tableHeaderRow.insertRow(-1);
+    var headers = Object.keys(myLibrary[0])
+    for (i in headers) {
+        console.log(headers[i]);
+        var header = document.createElement('th');
+        header.textContent = `${headers[i]}`;
+        row.appendChild(header);
+    }
+    var removeHeader = document.createElement('th')
+    removeHeader.textContent = "Remove";
+    row.appendChild(removeHeader);
+}
 
 populateTable();
