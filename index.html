@@ -13,16 +13,16 @@
     <div id="popUp">
         <form action="" id="library-form">
             <label for="book_title">Book title:</label>
-            <input type="text" name="book_title" id="book-title" value="The Drowned World">
+            <input type="text" name="book_title" id="book-title" maxlength=500 required value="The Drowned World">
             <br>
             <label for="author_name">Author name:</label>
-            <input type="text" name="author_name" id="author_name" value="J.G. Ballard">
+            <input type="text" name="author_name" id="author_name" maxlength=300 value="J.G. Ballard">
             <br>
             <label for="pages">Page count:</label>
-            <input type="text" name="pages" id="pages" value=329>
+            <input type="number" name="pages" id="pages" max=2000 min=1 value=329>
             <br>
-            <input type="radio" id="read1" name="read_status" value=true>
-            <label for="read1">I have read this book.</label>
+            <input type="radio" id="read" name="read-status" value=true>
+            <label for="read">I have read this book.</label>
             <button type="submit" value="Submit">Add book</button>
             <button type="reset">Reset form</button>
         </form>
@@ -36,9 +36,7 @@
             <th>Have you read this book?</th>
             <th>Remove Book</th>
         </thead>
-        <tbody id="library-table">
-
-        </tbody>
+        <tbody id="library-table"></tbody>
       </table>
 </body>
 </html>
