@@ -177,9 +177,9 @@ function addRemoveButton(index) {
 function addTrueFalseButton(read, index) {
     let button = document.createElement('button');
     if (read) {
-        button.textContent = "I have read this book.";
+        button.textContent = "Read.";
     } else {
-        button.textContent = "I have not read this book.";
+        button.textContent = "Not read.";
         button.style.backgroundColor = 'orange';
     };
     button.addEventListener('click', (e) => {
