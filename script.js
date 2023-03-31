@@ -17,6 +17,30 @@ let myLibrary = [
         pages:      250,
         read:       true,
     },
+    {
+        title:      'Orlando',
+        author:     'Virginia Woolf',
+        pages:      321,
+        read:       false,
+    },
+    {
+        title:      'Don Quixote',
+        author:     'Miguel de Cervantes',
+        pages:      924,
+        read:       true,
+    },
+    {
+        title:      'Our Aesthetic Categories',
+        author:     'Sianne Ngai',
+        pages:      501,
+        read:       true,
+    },
+    {
+        title:      'The Second Sex',
+        author:     'Simone de Beauvoir',
+        pages:      629,
+        read:       true,
+    },
 ];
 
 // Grabs relevant HTML elements for use. 
