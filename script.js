@@ -9,7 +9,7 @@ let myLibrary = [
         title:      'Moon of the Crusted Snow',
         author:     'Waubgeshig Rice',
         pages:      231,
-        read:       true,
+        read:       false,
     },
     {
         title:      'In the Skin of a Lion',
@@ -84,7 +84,6 @@ function updateTable() {
     var latestBook = myLibrary.slice(-1);
     var index = myLibrary.findIndex(x => x.author === latestBook[0].author && 
         x.title === latestBook[0].title);
-    console.log(typeof latestBook, latestBook);
     populateRow(latestBook[0], index);
     addRemoveButton(index);
     addTrueFalseButton(latestBook[0].read, index);
@@ -118,7 +117,7 @@ function addRemoveButton(index) {
     button.addEventListener('click', (e) => {
         e.preventDefault();
         alert(`the index number is: ${button.data}`);
-        // removeItem();
+        // removeItem(index);
     })
     document.getElementById(index).appendChild(button);
 }
@@ -126,14 +125,41 @@ function addRemoveButton(index) {
 function addTrueFalseButton(read, index) {
     let button = document.createElement('button');
     button.id = 'true-false';
-    button.textContent = `${read}`;
+    if (read) {
+        button.textContent = 'This means it is true.';
+    } else {
+        button.textContent = 'This means it is false.';
+    }
     button.data = read;
     button.addEventListener('click', (e) => {
         e.preventDefault();
-        alert(button.data);
-        // trueFalseToggle();
+        trueFalseToggle(read, index, button);
     })
     document.getElementById(`true-false ${index}`).appendChild(button);
+}
+
+function trueFalseToggle(read, index, button) {
+    if (read) {
+        myLibrary[index].read = false;
+        updateTrueFalseButton(button, false);
+    } else {
+        myLibrary[index].read = true;
+    }
+}
+
+function updateTrueFalseButton(button, read) {
+    button.innerHTML = "";
+    button.id = 'true-false';
+    if (read) {
+        button.textContent = 'This means it is true.';
+    } else {
+        button.textContent = 'This means it is false.';
+    }
+    button.data = read;
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        trueFalseToggle(read, index);
+    })
 }
 
 populateTable();
