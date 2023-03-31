@@ -3,43 +3,43 @@ let myLibrary = [
         title:      'Americanah',
         author:     'Chimamanda Ngozi Adichie',
         pages:      402,
-        read:       true,
+        readStatus: true,
     },
     {
         title:      'Moon of the Crusted Snow',
         author:     'Waubgeshig Rice',
         pages:      231,
-        read:       false,
+        readStatus: false,
     },
     {
         title:      'In the Skin of a Lion',
         author:     'Michael Ondaatje',
         pages:      250,
-        read:       true,
+        readStatus: true,
     },
     {
         title:      'Orlando',
         author:     'Virginia Woolf',
         pages:      321,
-        read:       false,
+        readStatus: false,
     },
     {
         title:      'Don Quixote',
         author:     'Miguel de Cervantes',
         pages:      924,
-        read:       true,
+        readStatus: true,
     },
     {
         title:      'Our Aesthetic Categories',
         author:     'Sianne Ngai',
         pages:      501,
-        read:       true,
+        readStatus: true,
     },
     {
         title:      'The Second Sex',
         author:     'Simone de Beauvoir',
         pages:      629,
-        read:       true,
+        readStatus: true,
     },
 ];
 
@@ -80,17 +80,17 @@ bookForm.addEventListener('keydown', (e) => {
 
 // Book object.
 
-function Book(title, author, pages, read) {
+function Book(title, author, pages, readStatus) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = read; // True or false.
+    this.readStatus = readStatus; // True or false.
 }
 
 // Adds book to library, updates the table to display new book.
 
-function addBookToLibrary(title, author, pages, read) {
-    const newBook = new Book(title, author, pages, read);
+function addBookToLibrary(title, author, pages, readStatus) {
+    const newBook = new Book(title, author, pages, readStatus);
     myLibrary.push(newBook)
     updateTable();
 }
@@ -111,6 +111,29 @@ function checkForDuplicate(title, author) {
 
 bookForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    checkForDuplicate(bookForm.elements[0].value, bookForm.elements[1].value);
+    if (!duplicate) {
+
+//        let formTitle = bookForm.elements[0].value;
+//        let formAuthor = bookForm.elements[1].value;
+//        let formPages = parseInt(bookForm.elements[2].value);
+//        let formRead = document.getElementById('read').checked;
+//        addBookToLibrary(formTitle, formAuthor, formPages, formRead);
+        addBookToLibrary(
+            bookForm.elements[0].value, 
+            bookForm.elements[1].value, 
+            bookForm.elements[2].value, 
+            document.getElementById('read').checked
+        );
+        popUpForm.style.display = 'none';
+    } else {
+        alert("This book is already in your library.");
+    }
+});
+
+/*
+bookForm.addEventListener('submit', (e) => {
+    e.preventDefault();
     let formTitle = bookForm.elements[0].value;
     let formAuthor = bookForm.elements[1].value;
     let formPages = parseInt(bookForm.elements[2].value);
@@ -123,6 +146,8 @@ bookForm.addEventListener('submit', (e) => {
         alert("This book is already in your library.");
     }
 });
+
+*/
 
 // When called, adds every book in myLibrary to the HTML table.
 // Also used to refresh the entire table.
@@ -167,13 +192,13 @@ function populateRow(item, index) {
     addRemoveBookButton(index);
 }
 
-// Adds a read-status button to the table.
+// Adds a 'read status' button to the table.
 
-function addReadStatusButton(read, index, cell) {
+function addReadStatusButton(readStatus, index, cell) {
     cell.id = `true-false ${index}`;
     let button = document.createElement('button');
     button.id = 'read-status';
-    if (read) {
+    if (readStatus) {
         button.textContent = "Read";
     } else {
         button.textContent = "Unread";
@@ -181,7 +206,7 @@ function addReadStatusButton(read, index, cell) {
     };
     button.addEventListener('click', (e) => {
         e.preventDefault();
-        readStatusToggle(read, index);
+        readStatusToggle(readStatus, index);
     })
     document.getElementById(cell.id).appendChild(button);
 }
@@ -200,14 +225,13 @@ function addRemoveBookButton(index) {
     document.getElementById(`remove ${index}`).appendChild(button);
 }
 
-// Toggles the read-status button by changing read-status
-// of a book in the library, then refreshes the table.
+// Changes readStatus of a book in the library, then refreshes the table.
 
-function readStatusToggle(read, index) {
-    if (read) {
-        myLibrary[index].read = false;
+function readStatusToggle(readStatus, index) {
+    if (readStatus) {
+        myLibrary[index].readStatus = false;
     } else {
-        myLibrary[index].read = true;
+        myLibrary[index].readStatus = true;
     }
     populateTable();
 }
