@@ -39,26 +39,18 @@ function Book(title, author, pages, read) {
 
 function addBookToLibrary(title, author, pages, read) {
     const newBook = new Book(title, author, pages, read);
-//    newBook.index = generateNewIndex();
     myLibrary.push(newBook)
-    updateDisplay();
+    updateTable();
 }
 
+// Checks if the book-to-be-added is already in the library.
+// Does not add book if it's already in the library.
 
-function generateNewIndex() {
-
-    var lastBook = myLibrary.slice(-1);
-    return newIndex = parseInt(lastBook[0].index + 1);
-
-}
-
-function checkForDuplicate(title, author, pages, read) {
-    // Checks to see if the book-to-be-added is already in the library.
-    // Does not add book if it's already in the library.
-
+function checkForDuplicate(title, author) {
     myLibrary.some(book => book.title === title && book.author === author) ?
-        undefined :
-        addBookToLibrary(title, author, pages, read);
+        duplicate = true :
+        duplicate = false;
+    return duplicate;
 }
 
 bookForm.addEventListener('submit', (e) => {
@@ -67,37 +59,35 @@ bookForm.addEventListener('submit', (e) => {
     let formAuthor = bookForm.elements[1].value;
     let formPages = parseInt(bookForm.elements[2].value);
     let formRead = document.getElementById('read1').checked;
-    checkForDuplicate(formTitle, formAuthor, formPages, formRead);
+    checkForDuplicate(formTitle, formAuthor);
+    if (!duplicate) {
+        addBookToLibrary(formTitle, formAuthor, formPages, formRead);
+    }
 });
 
-function populateDisplay() {
+// Adds every book in myLibrary to the HTML table.
+
+function populateTable() {
     myLibrary.forEach(item => {
-        var index = myLibrary.findIndex(x => x.author === item.author);
+        var index = myLibrary.findIndex(x => x.author === item.author && 
+            x.title === item.title);
         populateRow(item, index);
-
-/*
-        var row = table.insertRow(-1);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
-        cell1.textContent = item.title;
-        cell2.textContent = item.author;
-        cell3.textContent = item.pages;
-        cell4.id = `true-false ${index}`;
-        cell5.id = `${index}`;
-        row.appendChild(cell1);
-        row.appendChild(cell2);
-        row.appendChild(cell3);
-        row.appendChild(cell4);
-        row.appendChild(cell5);
-        table.appendChild(row);
-
-*/
         addRemoveButton(index);
-        addTrueFalseButton(item.read, index);        
+        addTrueFalseButton(item.read, index);
     })
+}
+
+// Adds one new book to the end of the table
+// without redrawing the whole table. 
+
+function updateTable() {
+    var latestBook = myLibrary.slice(-1);
+    var index = myLibrary.findIndex(x => x.author === latestBook[0].author && 
+        x.title === latestBook[0].title);
+    console.log(typeof latestBook, latestBook);
+    populateRow(latestBook[0], index);
+    addRemoveButton(index);
+    addTrueFalseButton(latestBook[0].read, index);
 }
 
 function populateRow(item, index) {
@@ -118,37 +108,6 @@ function populateRow(item, index) {
     row.appendChild(cell4);
     row.appendChild(cell5);
     table.appendChild(row);
-}
-
-function updateDisplay() {
-    var latestBook = myLibrary.slice(-1);
-    var index = myLibrary.findIndex(x => x.author === latestBook[0].author);
-    console.log(typeof latestBook, latestBook);
-    populateRow(latestBook[0], index);
-
-/*
-    var row = table.insertRow(-1);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    var cell4 = row.insertCell(3);
-    var cell5 = row.insertCell(4);
-    cell1.textContent = latestBook[0].title; 
-    cell2.textContent = latestBook[0].author; 
-    cell3.textContent = latestBook[0].pages;
-    cell4.id = `true-false ${index}`;
-    cell5.id = index;
-    row.appendChild(cell1);
-    row.appendChild(cell2);
-    row.appendChild(cell3);
-    row.appendChild(cell4);
-    row.appendChild(cell5);
-    table.appendChild(row);
-
-*/
-
-    addRemoveButton(index);
-    addTrueFalseButton(latestBook[0].read, index);
 }
 
 function addRemoveButton(index) {
@@ -177,4 +136,4 @@ function addTrueFalseButton(read, index) {
     document.getElementById(`true-false ${index}`).appendChild(button);
 }
 
-populateDisplay();
+populateTable();
