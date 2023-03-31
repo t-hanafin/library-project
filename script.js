@@ -100,7 +100,7 @@ function populateRow(item, index) {
     cell2.textContent = item.author;
     cell3.textContent = item.pages;
     cell4.id = `true-false ${index}`;
-    cell5.id = `${index}`;
+    cell5.id = `remove ${index}`;
     row.appendChild(cell1);
     row.appendChild(cell2);
     row.appendChild(cell3);
@@ -118,7 +118,7 @@ function addRemoveButton(index) {
         e.preventDefault();
         removeItem(index);
     })
-    document.getElementById(index).appendChild(button);
+    document.getElementById(`remove ${index}`).appendChild(button);
 }
 
 function addTrueFalseButton(read, index) {
@@ -145,9 +145,10 @@ function readStatusToggle(read, index) {
     populateTable();
 }
 
+
 function removeItem(index) {
     if (index === 0) {
-        const placeholderLibrary = myLibrary.splice(index, index + 1);
+        const placeholderLibrary = myLibrary.shift();
     } else {
         const placeholderLibrary = myLibrary.splice(index, index);
     }
