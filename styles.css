@@ -30,7 +30,7 @@ button {
     width: 100%;
 }
 
-#remove-button {
+#remove-button, #true-false {
     background-color: #8ebf42;
     color: white;
     padding: 0px;
