@@ -19,8 +19,42 @@ let myLibrary = [
     },
 ];
 
+// Grabs relevant HTML elements for use. 
+
 const table = document.querySelector('#library-table')
-const bookForm = document.querySelector('#library_form');
+const bookForm = document.querySelector('#library-form');
+const container = document.querySelector('.container');
+const popUpForm = document.getElementById('popUp');
+
+// Button to reveal the book-entry form.
+
+let showForm = document.createElement('button');
+showForm.id = 'show-form';
+showForm.textContent = "Add a book to your library.";
+showForm.addEventListener('click', (e) => {
+    popUpForm.style.display = 'block';
+    document.getElementById('book-title').focus();
+})
+container.appendChild(showForm);
+
+// Form-button to conceal book-entry form.
+
+let hideButton = document.createElement('button');
+hideButton.textContent = "Close form";
+hideButton.addEventListener('mousedown', (e) => {
+    popUpForm.style.display = 'none';
+});
+bookForm.appendChild(hideButton);
+
+// Add event listener to close with escape key.
+
+bookForm.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        popUpForm.style.display = 'none';
+    }
+});
+
+// Template table elements.
 
 let row = document.createElement('tr');
 let cell1 = document.createElement('td');
@@ -29,12 +63,16 @@ let cell3 = document.createElement('td');
 let cell4 = document.createElement('td');
 let cell5 = document.createElement('td');
 
+// Book object.
+
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read; // True or false.
 }
+
+// Adds book to library, updates the table to display new book.
 
 function addBookToLibrary(title, author, pages, read) {
     const newBook = new Book(title, author, pages, read);
@@ -52,6 +90,10 @@ function checkForDuplicate(title, author) {
     return duplicate;
 }
 
+// Takes input from form, validates it, checks if it's a duplicate
+// warns if it is a duplicate, adds to the library, closes
+// book entry form. 
+
 bookForm.addEventListener('submit', (e) => {
     e.preventDefault();
     let formTitle = bookForm.elements[0].value;
@@ -61,10 +103,14 @@ bookForm.addEventListener('submit', (e) => {
     checkForDuplicate(formTitle, formAuthor);
     if (!duplicate) {
         addBookToLibrary(formTitle, formAuthor, formPages, formRead);
+        popUpForm.style.display = 'none';
+    } else {
+        alert("This book is already in your library.");
     }
 });
 
-// Adds every book in myLibrary to the HTML table.
+// When called, adds every book in myLibrary to the HTML table.
+// Also used to refresh the entire table.
 
 function populateTable() {
     table.innerHTML = '';
@@ -89,6 +135,9 @@ function updateTable() {
     addTrueFalseButton(latestBook[0].read, index);
 }
 
+// Returns a new row for the table, with content 
+// and relevant ids added to cells. 
+
 function populateRow(item, index) {
     var row = table.insertRow(-1);
     var cell1 = row.insertCell(0);
@@ -109,6 +158,8 @@ function populateRow(item, index) {
     table.appendChild(row);
 }
 
+// Adds a remove-book button to the table.
+
 function addRemoveButton(index) {
     let button = document.createElement('button');
     button.id = 'remove-button';
@@ -120,6 +171,8 @@ function addRemoveButton(index) {
     })
     document.getElementById(`remove ${index}`).appendChild(button);
 }
+
+// Adds a read-status button to the table.
 
 function addTrueFalseButton(read, index) {
     let button = document.createElement('button');
@@ -136,6 +189,9 @@ function addTrueFalseButton(read, index) {
     document.getElementById(`true-false ${index}`).appendChild(button);
 }
 
+// Toggles the read-status button by changing read-status
+// of a book in the library, then refreshes the table.
+
 function readStatusToggle(read, index) {
     if (read) {
         myLibrary[index].read = false;
@@ -145,7 +201,7 @@ function readStatusToggle(read, index) {
     populateTable();
 }
 
-
+// Removes a book from the library, refreshes the table.
 function removeItem(index) {
     if (index === 0) {
         const placeholderLibrary = myLibrary.shift();
@@ -154,5 +210,7 @@ function removeItem(index) {
     }
     populateTable();
 }
+
+// Shows what's in the library on load. 
 
 populateTable();
