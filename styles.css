@@ -23,21 +23,26 @@ input[type=text], input[type=number] {
 button {
     background-color: #8ebf42;
     color: white;
-    padding: 14px 0;
-    margin: 10px 0;
+    padding: 14px 0px;
+    margin: 10px 0px;
     border: none;
     cursor: pointer;
     width: 100%;
+    border-radius: 5px;
 }
 
-#remove-button, #true-false {
-    background-color: #8ebf42;
-    color: white;
-    padding: 0px;
-    margin: 0px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#show-form {
+    width: 33%;
+}
+
+#remove-button, #read-status {
+    border-radius: 5px;
 }
 
 #popUp {

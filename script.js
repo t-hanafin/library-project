@@ -176,6 +176,7 @@ function addRemoveButton(index) {
 
 function addTrueFalseButton(read, index) {
     let button = document.createElement('button');
+    button.id = 'read-status';
     if (read) {
         button.textContent = "Read.";
     } else {
