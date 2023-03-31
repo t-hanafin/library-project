@@ -19,7 +19,7 @@ let myLibrary = [
     },
 ];
 
-const table = document.querySelector('#table');
+const table = document.querySelector('#library-table')
 const bookForm = document.querySelector('#library_form');
 
 let row = document.createElement('tr');
@@ -28,7 +28,6 @@ let cell2 = document.createElement('td');
 let cell3 = document.createElement('td');
 let cell4 = document.createElement('td');
 let cell5 = document.createElement('td');
-
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -68,6 +67,7 @@ bookForm.addEventListener('submit', (e) => {
 // Adds every book in myLibrary to the HTML table.
 
 function populateTable() {
+    table.innerHTML = '';
     myLibrary.forEach(item => {
         var index = myLibrary.findIndex(x => x.author === item.author && 
             x.title === item.title);
@@ -124,42 +124,19 @@ function addRemoveButton(index) {
 
 function addTrueFalseButton(read, index) {
     let button = document.createElement('button');
-    button.id = 'true-false';
-    if (read) {
-        button.textContent = 'This means it is true.';
-    } else {
-        button.textContent = 'This means it is false.';
-    }
-    button.data = read;
+    button.textContent = read;
+    button.value = read;
     button.addEventListener('click', (e) => {
         e.preventDefault();
-        trueFalseToggle(read, index, button);
+        if (read) {
+            myLibrary[index].read = false;
+            populateTable();
+        } else {
+            myLibrary[index].read = true;
+            populateTable();
+        }
     })
     document.getElementById(`true-false ${index}`).appendChild(button);
-}
-
-function trueFalseToggle(read, index, button) {
-    if (read) {
-        myLibrary[index].read = false;
-        updateTrueFalseButton(button, false);
-    } else {
-        myLibrary[index].read = true;
-    }
-}
-
-function updateTrueFalseButton(button, read) {
-    button.innerHTML = "";
-    button.id = 'true-false';
-    if (read) {
-        button.textContent = 'This means it is true.';
-    } else {
-        button.textContent = 'This means it is false.';
-    }
-    button.data = read;
-    button.addEventListener('click', (e) => {
-        e.preventDefault();
-        trueFalseToggle(read, index);
-    })
 }
 
 populateTable();
