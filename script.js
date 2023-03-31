@@ -70,8 +70,6 @@ bookForm.addEventListener('submit', (e) => {
     checkForDuplicate(formTitle, formAuthor, formPages, formRead);
 });
 
-
-
 function populateDisplay() {
     myLibrary.forEach(item => {
         var row = table.insertRow(-1);
@@ -80,10 +78,10 @@ function populateDisplay() {
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
         var cell5 = row.insertCell(4);
-        cell1.textContent = (item[Object.keys(item)[0]]);
-        cell2.textContent = (item[Object.keys(item)[1]]);
-        cell3.textContent = (item[Object.keys(item)[2]]);
-        cell4.textContent = (item[Object.keys(item)[3]]);
+        cell1.textContent = (item.title);
+        cell2.textContent = (item.author);
+        cell3.textContent = (item.pages);
+        cell4.id = `true-false ${item.index}`;
         cell5.id = `${item.index}`;
         row.appendChild(cell1);
         row.appendChild(cell2);
@@ -92,6 +90,7 @@ function populateDisplay() {
         row.appendChild(cell5);
         table.appendChild(row);
         addRemoveButton(item.index);
+        addTrueFalseToggle(item.read, item.index);
     })
 }
 
@@ -107,6 +106,7 @@ function updateDisplay() {
     cell2.textContent = latestBook[0].author; 
     cell3.textContent = latestBook[0].pages;
     cell4.textContent = latestBook[0].read;
+    cell4.id = 'true-false';
     cell5.id = latestBook[0].index;
     row.appendChild(cell1);
     row.appendChild(cell2);
@@ -116,8 +116,6 @@ function updateDisplay() {
     table.appendChild(row);
     addRemoveButton(latestBook[0].index);
 }
-
-populateDisplay();
 
 function addRemoveButton(index) {
     let button = document.createElement('button');
@@ -130,3 +128,18 @@ function addRemoveButton(index) {
     })
     document.getElementById(index).appendChild(button);
 }
+
+function addTrueFalseToggle(read, index) {
+    let button = document.createElement('button');
+    button.id = 'true-false';
+    button.textContent = `${read}`;
+    button.data = read;
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert(`the value is ${read}`);
+    })
+    document.getElementById(`true-false ${index}`).appendChild(button);
+}
+
+
+populateDisplay();
