@@ -99,7 +99,7 @@ bookForm.addEventListener('submit', (e) => {
     let formTitle = bookForm.elements[0].value;
     let formAuthor = bookForm.elements[1].value;
     let formPages = parseInt(bookForm.elements[2].value);
-    let formRead = document.getElementById('read1').checked;
+    let formRead = document.getElementById('read').checked;
     checkForDuplicate(formTitle, formAuthor);
     if (!duplicate) {
         addBookToLibrary(formTitle, formAuthor, formPages, formRead);
@@ -178,9 +178,9 @@ function addTrueFalseButton(read, index) {
     let button = document.createElement('button');
     button.id = 'read-status';
     if (read) {
-        button.textContent = "Read.";
+        button.textContent = "Read";
     } else {
-        button.textContent = "Not read.";
+        button.textContent = "Unread";
         button.style.backgroundColor = 'orange';
     };
     button.addEventListener('click', (e) => {
