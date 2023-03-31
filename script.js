@@ -141,6 +141,7 @@ function populateTable() {
     myLibrary.forEach(item => {
         var index = myLibrary.findIndex(x => x.author === item.author && 
             x.title === item.title);
+        console.log(index);
         populateRow(item, index);
         addRemoveButton(index);
         addTrueFalseButton(item.read, index);
@@ -228,11 +229,15 @@ function readStatusToggle(read, index) {
 
 // Removes a book from the library, refreshes the table.
 function removeItem(index) {
+    const removedBook = myLibrary.splice(index, 1);
+
+/*
     if (index === 0) {
         const placeholderLibrary = myLibrary.shift();
     } else {
-        const placeholderLibrary = myLibrary.splice(index, index);
+        const placeholderLibrary = myLibrary.splice(index, 1);
     }
+*/
     populateTable();
 }
 
