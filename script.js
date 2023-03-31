@@ -4,21 +4,18 @@ let myLibrary = [
         author:     'Chimamanda Ngozi Adichie',
         pages:      402,
         read:       true,
-        index:      0,
-    },
-    {
-        title:      'In the Skin of a Lion',
-        author:     'Michael Ondaatje',
-        pages:      250,
-        read:       true,
-        index:      1,
     },
     {
         title:      'Moon of the Crusted Snow',
         author:     'Waubgeshig Rice',
         pages:      231,
         read:       true,
-        index:      2,
+    },
+    {
+        title:      'In the Skin of a Lion',
+        author:     'Michael Ondaatje',
+        pages:      250,
+        read:       true,
     },
 ];
 
@@ -42,14 +39,17 @@ function Book(title, author, pages, read) {
 
 function addBookToLibrary(title, author, pages, read) {
     const newBook = new Book(title, author, pages, read);
-    newBook.index = generateNewIndex();
+//    newBook.index = generateNewIndex();
     myLibrary.push(newBook)
     updateDisplay();
 }
 
+
 function generateNewIndex() {
+
     var lastBook = myLibrary.slice(-1);
     return newIndex = parseInt(lastBook[0].index + 1);
+
 }
 
 function checkForDuplicate(title, author, pages, read) {
@@ -72,30 +72,61 @@ bookForm.addEventListener('submit', (e) => {
 
 function populateDisplay() {
     myLibrary.forEach(item => {
+        var index = myLibrary.findIndex(x => x.author === item.author);
+        populateRow(item, index);
+
+/*
         var row = table.insertRow(-1);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
         var cell4 = row.insertCell(3);
         var cell5 = row.insertCell(4);
-        cell1.textContent = (item.title);
-        cell2.textContent = (item.author);
-        cell3.textContent = (item.pages);
-        cell4.id = `true-false ${item.index}`;
-        cell5.id = `${item.index}`;
+        cell1.textContent = item.title;
+        cell2.textContent = item.author;
+        cell3.textContent = item.pages;
+        cell4.id = `true-false ${index}`;
+        cell5.id = `${index}`;
         row.appendChild(cell1);
         row.appendChild(cell2);
         row.appendChild(cell3);
         row.appendChild(cell4);
         row.appendChild(cell5);
         table.appendChild(row);
-        addRemoveButton(item.index);
-        addTrueFalseToggle(item.read, item.index);
+
+*/
+        addRemoveButton(index);
+        addTrueFalseButton(item.read, index);        
     })
+}
+
+function populateRow(item, index) {
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    cell1.textContent = item.title;
+    cell2.textContent = item.author;
+    cell3.textContent = item.pages;
+    cell4.id = `true-false ${index}`;
+    cell5.id = `${index}`;
+    row.appendChild(cell1);
+    row.appendChild(cell2);
+    row.appendChild(cell3);
+    row.appendChild(cell4);
+    row.appendChild(cell5);
+    table.appendChild(row);
 }
 
 function updateDisplay() {
     var latestBook = myLibrary.slice(-1);
+    var index = myLibrary.findIndex(x => x.author === latestBook[0].author);
+    console.log(typeof latestBook, latestBook);
+    populateRow(latestBook[0], index);
+
+/*
     var row = table.insertRow(-1);
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);
@@ -105,16 +136,19 @@ function updateDisplay() {
     cell1.textContent = latestBook[0].title; 
     cell2.textContent = latestBook[0].author; 
     cell3.textContent = latestBook[0].pages;
-    cell4.textContent = latestBook[0].read;
-    cell4.id = 'true-false';
-    cell5.id = latestBook[0].index;
+    cell4.id = `true-false ${index}`;
+    cell5.id = index;
     row.appendChild(cell1);
     row.appendChild(cell2);
     row.appendChild(cell3);
     row.appendChild(cell4);
     row.appendChild(cell5);
     table.appendChild(row);
-    addRemoveButton(latestBook[0].index);
+
+*/
+
+    addRemoveButton(index);
+    addTrueFalseButton(latestBook[0].read, index);
 }
 
 function addRemoveButton(index) {
@@ -125,21 +159,22 @@ function addRemoveButton(index) {
     button.addEventListener('click', (e) => {
         e.preventDefault();
         alert(`the index number is: ${button.data}`);
+        // removeItem();
     })
     document.getElementById(index).appendChild(button);
 }
 
-function addTrueFalseToggle(read, index) {
+function addTrueFalseButton(read, index) {
     let button = document.createElement('button');
     button.id = 'true-false';
     button.textContent = `${read}`;
     button.data = read;
     button.addEventListener('click', (e) => {
         e.preventDefault();
-        alert(`the value is ${read}`);
+        alert(button.data);
+        // trueFalseToggle();
     })
     document.getElementById(`true-false ${index}`).appendChild(button);
 }
-
 
 populateDisplay();
