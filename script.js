@@ -52,23 +52,23 @@ const popUpForm = document.getElementById('popUp');
 
 // Button to reveal the book-entry form.
 
-let showForm = document.createElement('button');
-showForm.id = 'show-form';
-showForm.textContent = "Add a book to your library.";
-showForm.addEventListener('click', (e) => {
+let addBookButton = document.createElement('button');
+addBookButton.id = 'show-form';
+addBookButton.textContent = "Add a book to your library.";
+addBookButton.addEventListener('click', (e) => {
     popUpForm.style.display = 'block';
     document.getElementById('book-title').focus();
 })
-container.appendChild(showForm);
+container.appendChild(addBookButton);
 
 // Form-button to conceal book-entry form.
 
-let hideButton = document.createElement('button');
-hideButton.textContent = "Close form";
-hideButton.addEventListener('mousedown', (e) => {
+let hideFormButton = document.createElement('button');
+hideFormButton.textContent = "Close form";
+hideFormButton.addEventListener('mousedown', (e) => {
     popUpForm.style.display = 'none';
 });
-bookForm.appendChild(hideButton);
+bookForm.appendChild(hideFormButton);
 
 // Add event listener to close with escape key.
 
@@ -77,16 +77,6 @@ bookForm.addEventListener('keydown', (e) => {
         popUpForm.style.display = 'none';
     }
 });
-
-// Template table elements.
-
-let row = document.createElement('tr');
-let cell = document.createElement('td');
-let cell1 = document.createElement('td');
-let cell2 = document.createElement('td');
-let cell3 = document.createElement('td');
-let cell4 = document.createElement('td');
-let cell5 = document.createElement('td');
 
 // Book object.
 
@@ -167,40 +157,19 @@ function populateRow(item, index) {
         console.log(thisBook[i]);
         var cell = row.insertCell(i);
         if (typeof thisBook[i] === 'boolean') {
-            addTrueFalseButton(thisBook[i], index, cell);
+            addReadStatusButton(thisBook[i], index, cell);
         } else if (typeof thisBook[i] === 'string' || 'number') {
             cell.textContent = thisBook[i];
         }
     }
     var removeButtonCell = row.insertCell(Object.keys(item).length);
     removeButtonCell.id = `remove ${index}`;
-    addRemoveButton(index);
-
-/*
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    var cell4 = row.insertCell(3);
-    var cell5 = row.insertCell(4);
-    cell1.textContent = item.title;
-    cell2.textContent = item.author;
-    cell3.textContent = item.pages;
-    cell4.id = `true-false ${index}`;
-    cell5.id = `remove ${index}`;
-    row.appendChild(cell1);
-    row.appendChild(cell2);
-    row.appendChild(cell3);
-    row.appendChild(cell4);
-    row.appendChild(cell5);
-    table.appendChild(row);
-    addTrueFalseButton(item.read, index);
-    addRemoveButton(index);
-    */
+    addRemoveBookButton(index);
 }
 
 // Adds a read-status button to the table.
 
-function addTrueFalseButton(read, index, cell) {
+function addReadStatusButton(read, index, cell) {
     cell.id = `true-false ${index}`;
     let button = document.createElement('button');
     button.id = 'read-status';
@@ -214,12 +183,12 @@ function addTrueFalseButton(read, index, cell) {
         e.preventDefault();
         readStatusToggle(read, index);
     })
-    document.getElementById(`true-false ${index}`).appendChild(button);
+    document.getElementById(cell.id).appendChild(button);
 }
 
-// Adds a remove-book button to the table.
+// Adds a 'remove book' button to the table.
 
-function addRemoveButton(index) {
+function addRemoveBookButton(index) {
     let button = document.createElement('button');
     button.id = 'remove-button';
     button.textContent = 'Remove';
