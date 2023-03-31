@@ -202,7 +202,7 @@ function addTrueFalseButton(read, index) {
     let button = document.createElement('button');
     button.id = 'read-status';
     if (read) {
-        button.textContent = " Read ";
+        button.textContent = "Read";
     } else {
         button.textContent = "Unread";
         button.style.backgroundColor = 'orange';

@@ -30,6 +30,7 @@ button {
 #read-status, #remove-button {
     margin: 0px;
     padding: 5px;
+    width: 75px;
 }
 
 .container {
