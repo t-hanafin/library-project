@@ -70,7 +70,7 @@ hideFormButton.addEventListener('mousedown', (e) => {
 });
 bookForm.appendChild(hideFormButton);
 
-// Add event listener to close with escape key.
+// Add event listener to form to allow close with escape key.
 
 bookForm.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -87,7 +87,7 @@ function Book(title, author, pages, readStatus) {
     this.readStatus = readStatus; // True or false.
 }
 
-// Adds book to library, updates the table to display new book.
+// Adds book to library, calls updateTable function.
 
 function addBookToLibrary(title, author, pages, readStatus) {
     const newBook = new Book(title, author, pages, readStatus);
@@ -96,7 +96,6 @@ function addBookToLibrary(title, author, pages, readStatus) {
 }
 
 // Checks if the book-to-be-added is already in the library.
-// Does not add book if it's already in the library.
 
 function checkForDuplicate(title, author) {
     myLibrary.some(book => book.title === title && book.author === author) ?
@@ -105,7 +104,7 @@ function checkForDuplicate(title, author) {
     return duplicate;
 }
 
-// Takes input from form, validates it, checks if it's a duplicate
+// Takes input from form, checks if it's a duplicate
 // warns if it is a duplicate, adds to the library, closes
 // book entry form. 
 
@@ -113,12 +112,6 @@ bookForm.addEventListener('submit', (e) => {
     e.preventDefault();
     checkForDuplicate(bookForm.elements[0].value, bookForm.elements[1].value);
     if (!duplicate) {
-
-//        let formTitle = bookForm.elements[0].value;
-//        let formAuthor = bookForm.elements[1].value;
-//        let formPages = parseInt(bookForm.elements[2].value);
-//        let formRead = document.getElementById('read').checked;
-//        addBookToLibrary(formTitle, formAuthor, formPages, formRead);
         addBookToLibrary(
             bookForm.elements[0].value, 
             bookForm.elements[1].value, 
@@ -130,24 +123,6 @@ bookForm.addEventListener('submit', (e) => {
         alert("This book is already in your library.");
     }
 });
-
-/*
-bookForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    let formTitle = bookForm.elements[0].value;
-    let formAuthor = bookForm.elements[1].value;
-    let formPages = parseInt(bookForm.elements[2].value);
-    let formRead = document.getElementById('read').checked;
-    checkForDuplicate(formTitle, formAuthor);
-    if (!duplicate) {
-        addBookToLibrary(formTitle, formAuthor, formPages, formRead);
-        popUpForm.style.display = 'none';
-    } else {
-        alert("This book is already in your library.");
-    }
-});
-
-*/
 
 // When called, adds every book in myLibrary to the HTML table.
 // Also used to refresh the entire table.
@@ -166,9 +141,7 @@ function populateTable() {
 
 function updateTable() {
     var latestBook = myLibrary.slice(-1);
-    var index = myLibrary.findIndex(x => x.author === latestBook[0].author && 
-        x.title === latestBook[0].title);
-    populateRow(latestBook[0], index);
+    populateRow(latestBook[0], (myLibrary.length - 1));
 }
 
 // Returns a new row for the table, with content 
@@ -177,7 +150,6 @@ function updateTable() {
 function populateRow(item, index) {
     var row = table.insertRow(-1);
     var thisBook = Object.values(item);
-    console.log(thisBook);
     for (i in thisBook) {
         console.log(thisBook[i]);
         var cell = row.insertCell(i);
