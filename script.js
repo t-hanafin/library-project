@@ -11,8 +11,6 @@ let myLibrary = [
         pages:      231,
         status:     false,
     },
-
-    /*
     {
         title:      'In the Skin of a Lion',
         author:     'Michael Ondaatje',
@@ -25,24 +23,6 @@ let myLibrary = [
         pages:      321,
         status:     false,
     },
-    {
-        title:      'Don Quixote',
-        author:     'Miguel de Cervantes',
-        pages:      924,
-        status:     true,
-    },
-    {
-        title:      'Our Aesthetic Categories',
-        author:     'Sianne Ngai',
-        pages:      501,
-        status:     true,
-    },
-    {
-        title:      'The Second Sex',
-        author:     'Simone de Beauvoir',
-        pages:      629,
-        status:     true,
-    }, */
 ];
 
 // Grabs relevant HTML elements for use. 
@@ -224,7 +204,6 @@ function populateTableHeaders(item, index) {
     var row = tableHeaderRow.insertRow(-1);
     var headers = Object.keys(myLibrary[0])
     for (i in headers) {
-        console.log(headers[i]);
         var header = document.createElement('th');
         header.textContent = `${headers[i]}`;
         row.appendChild(header);
