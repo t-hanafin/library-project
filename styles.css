@@ -65,10 +65,6 @@ form {
     border: 1px solid #888;
     width: 33%;
 }
-
-th {
-    text-transform: capitalize;
-}
     
 /* TABLE STYLING */
 
@@ -87,6 +83,7 @@ th {
 
 th {
     background-color: rgb(235, 235, 235);
+    text-transform: capitalize;
 }
 
 td {
