@@ -194,8 +194,10 @@ function readStatusToggle(status, index) {
 
 // Removes a book from the library, refreshes the table.
 function removeItem(index) {
-    const removedBook = myLibrary.splice(index, 1);
-    populateTable();
+    if (window.confirm("Are you sure?")) {
+        const removedBook = myLibrary.splice(index, 1);
+        populateTable();        
+    }
 }
 
 // Populates the header row.
