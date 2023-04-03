@@ -38,33 +38,12 @@ let myLibrary = [];
 const tableHeaderRow = document.querySelector('thead');
 const table = document.querySelector('#library-table');
 const bookForm = document.querySelector('#library-form');
-const container = document.querySelector('.container');
 const popUpForm = document.getElementById('popUp');
 
-// Button to reveal the book-entry form.
+// Add event listener to close the popUpForm with escape key.
 
-let addBookButton = document.createElement('button');
-addBookButton.id = 'show-form';
-addBookButton.textContent = "Add a book to your library.";
-addBookButton.addEventListener('click', (e) => {
-    popUpForm.style.display = 'block';
-    document.getElementById('book-title').focus();
-})
-container.appendChild(addBookButton);
-
-// Form-button to conceal book-entry form.
-
-let hideFormButton = document.createElement('button');
-hideFormButton.textContent = "Close form";
-hideFormButton.addEventListener('mousedown', (e) => {
-    popUpForm.style.display = 'none';
-});
-bookForm.appendChild(hideFormButton);
-
-// Add event listener to form to allow close with escape key.
-
-bookForm.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
+window.addEventListener('keydown', (e) => {
+    if (e.key == 'Escape') {
         popUpForm.style.display = 'none';
     }
 });
@@ -99,10 +78,9 @@ function addBookToLibrary(title, author, pages, status) {
 
 const populateMyLibrary = (array) => {
     array.forEach(item => {
-        checkForDuplicate(item.title, item. author);
-        if (!duplicate) {
-            addBookToLibrary(item.title, item.author, item.pages, item.status);
-        }
+        checkForDuplicate(item.title, item.author) ? 
+        undefined : 
+        addBookToLibrary(item.title, item.author, item.pages, item.status);
     });
 }
 
@@ -123,12 +101,13 @@ bookForm.addEventListener('submit', (e) => {
     e.preventDefault();
     checkForDuplicate(bookForm.elements[0].value, bookForm.elements[1].value);
     if (!duplicate) {
-        addBookToLibrary(
+         addBookToLibrary(
             bookForm.elements[0].value, 
             bookForm.elements[1].value, 
             bookForm.elements[2].value, 
             document.getElementById('read').checked
         );
+
         popUpForm.style.display = 'none';
         updateTable();
     } else {
@@ -143,10 +122,8 @@ function populateTable() {
     tableHeaderRow.innerHTML = '';
     table.innerHTML = '';
     populateTableHeaders();
-    let i = 0;
-    myLibrary.forEach(item => {
-        populateRow(item, i);
-        i++
+    myLibrary.forEach(function callback(book, index) {
+        populateRow(book, index);
     })
 }
 
@@ -161,17 +138,17 @@ function updateTable() {
 // Returns a new row for the table, with content 
 // and relevant ids added to cells. 
 
-function populateRow(item, index) {
+function populateRow(book, index) {
     var row = table.insertRow(-1);
-    for (let value of (Object.values(item))) {
-        let cell = row.insertCell(Object.values(item).indexOf(value));
+    for (let value of (Object.values(book))) {
+        let cell = row.insertCell(Object.values(book).indexOf(value));
         if (typeof value != 'boolean') {
             cell.textContent = value;
         } else {
             addReadStatusButton(value, index, cell);
         }
     }
-    var removeButtonCell = row.insertCell(Object.keys(item).length);
+    var removeButtonCell = row.insertCell(Object.keys(book).length);
     removeButtonCell.id = `remove ${index}`;
     addRemoveBookButton(index);
 }
@@ -210,10 +187,11 @@ function addRemoveBookButton(index) {
 }
 
 // Removes a book from the library, refreshes the table.
-function removeItem(index) {
-    if (window.confirm("Are you sure?")) {
-        const removedBook = myLibrary.splice(index, 1);
-        populateTable();        
+
+removeItem = (index) => {
+    if (window.confirm("Press OK if you're sure you want to delete this book.")) {
+        myLibrary.splice(index, 1);
+        populateTable();
     }
 }
 

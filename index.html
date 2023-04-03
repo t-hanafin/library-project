@@ -9,11 +9,15 @@
   <title>Library Project</title>
 </head>
 <body>
-    <div class="container"></div>
+    <div class="container">
+        <button onclick = "popUpForm.style.display = 'block';" id="show-form">
+            Add a book to your library.
+        </button>
+    </div>
     <div id="popUp">
         <form action="" id="library-form">
             <label for="book_title">Book title:</label>
-            <input type="text" name="book_title" id="book-title" maxlength=500 required value="The Drowned World">
+            <input type="text" name="book_title" autofocus id="book-title" maxlength=500 required value="The Drowned World">
             <br>
             <label for="author_name">Author name:</label>
             <input type="text" name="author_name" id="author_name" maxlength=300 value="J.G. Ballard">
@@ -26,6 +30,7 @@
             <br>
             <button type="submit" value="Submit">Add book</button>
             <button type="reset">Reset form</button>
+            <button type="button" onclick = "popUpForm.style.display = 'none';">Close form</button>
         </form>
     </div>
 
