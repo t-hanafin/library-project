@@ -1,15 +1,9 @@
-let myLibrary = [
+let initialLibrary = [
     {
-        title:      'Americanah',
-        author:     'Chimamanda Ngozi Adichie',
-        pages:      402,
+        title:      'In the Skin of a Lion',
+        author:     'Michael Ondaatje',
+        pages:      250,
         status:     true,
-    },
-    {
-        title:      'Moon of the Crusted Snow',
-        author:     'Waubgeshig Rice',
-        pages:      231,
-        status:     false,
     },
     {
         title:      'In the Skin of a Lion',
@@ -23,7 +17,21 @@ let myLibrary = [
         pages:      321,
         status:     false,
     },
-];
+    {
+        title:      'Americanah',
+        author:     'Chimamanda Ngozi Adichie',
+        pages:      402,
+        status:     true,
+    },
+    {
+        title:      'Moon of the Crusted Snow',
+        author:     'Waubgeshig Rice',
+        pages:      231,
+        status:     false,
+    },
+]
+
+let myLibrary = [];
 
 // Grabs relevant HTML elements for use. 
 
@@ -70,12 +78,32 @@ function Book(title, author, pages, status) {
     this.status = status; // True or false.
 }
 
-// Adds book to library, calls updateTable function.
+// Adds a function to each book to toggle read status.
+
+Book.prototype.toggleReadStatus = function() {
+    if (this.status) {
+        this.status = false;
+    } else {
+        this.status = true;
+    }
+}
+
+// Adds book to library.
 
 function addBookToLibrary(title, author, pages, status) {
-    const newBook = new Book(title, author, pages, status);
+    let newBook = new Book(title, author, pages, status);
     myLibrary.push(newBook)
-    updateTable();
+}
+
+// Pulls books from the initial library array, adds them to myLibrary array.
+
+const populateMyLibrary = (array) => {
+    array.forEach(item => {
+        checkForDuplicate(item.title, item. author);
+        if (!duplicate) {
+            addBookToLibrary(item.title, item.author, item.pages, item.status);
+        }
+    });
 }
 
 // Checks if the book-to-be-added is already in the library.
@@ -102,6 +130,7 @@ bookForm.addEventListener('submit', (e) => {
             document.getElementById('read').checked
         );
         popUpForm.style.display = 'none';
+        updateTable();
     } else {
         alert("This book is already in your library.");
     }
@@ -114,10 +143,10 @@ function populateTable() {
     tableHeaderRow.innerHTML = '';
     table.innerHTML = '';
     populateTableHeaders();
+    let i = 0;
     myLibrary.forEach(item => {
-        var index = myLibrary.findIndex(x => x.author === item.author && 
-            x.title === item.title);
-        populateRow(item, index);
+        populateRow(item, i);
+        i++
     })
 }
 
@@ -134,13 +163,12 @@ function updateTable() {
 
 function populateRow(item, index) {
     var row = table.insertRow(-1);
-    var thisBook = Object.values(item);
-    for (i in thisBook) {
-        var cell = row.insertCell(i);
-        if (typeof thisBook[i] === 'boolean') {
-            addReadStatusButton(thisBook[i], index, cell);
-        } else if (typeof thisBook[i] === 'string' || 'number') {
-            cell.textContent = thisBook[i];
+    for (let value of (Object.values(item))) {
+        let cell = row.insertCell(Object.values(item).indexOf(value));
+        if (typeof value != 'boolean') {
+            cell.textContent = value;
+        } else {
+            addReadStatusButton(value, index, cell);
         }
     }
     var removeButtonCell = row.insertCell(Object.keys(item).length);
@@ -162,7 +190,8 @@ function addReadStatusButton(status, index, cell) {
     };
     button.addEventListener('click', (e) => {
         e.preventDefault();
-        readStatusToggle(status, index);
+        myLibrary[index].toggleReadStatus();
+        populateTable();
     })
     document.getElementById(cell.id).appendChild(button);
 }
@@ -173,23 +202,11 @@ function addRemoveBookButton(index) {
     let button = document.createElement('button');
     button.id = 'remove-button';
     button.textContent = 'Remove';
-    button.data = index;
     button.addEventListener('click', (e) => {
         e.preventDefault();
         removeItem(index);
     })
     document.getElementById(`remove ${index}`).appendChild(button);
-}
-
-// Changes status of a book in the library, then refreshes the table.
-
-function readStatusToggle(status, index) {
-    if (status) {
-        myLibrary[index].status = false;
-    } else {
-        myLibrary[index].status = true;
-    }
-    populateTable();
 }
 
 // Removes a book from the library, refreshes the table.
@@ -215,4 +232,5 @@ function populateTableHeaders(item, index) {
     row.appendChild(removeHeader);
 }
 
+populateMyLibrary(initialLibrary);
 populateTable();
