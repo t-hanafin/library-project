@@ -10,17 +10,17 @@
 </head>
 <body>
     <div class="container">
-        <button onclick = "popUpForm.style.display = 'block';" id="show-form">
+        <button id="show-form" onclick = "popUpForm.style.display = 'block';" >
             Add a book to your library.
         </button>
     </div>
-    <div id="popUp">
+    <div id="pop-up">
         <form action="" id="library-form">
-            <label for="book_title">Book title:</label>
-            <input type="text" name="book_title" autofocus id="book-title" maxlength=500 required value="The Drowned World">
+            <label for="book-title">Book title:</label>
+            <input type="text" name="book-title" autofocus id="book-title" maxlength=500 required value="The Drowned World">
             <br>
-            <label for="author_name">Author name:</label>
-            <input type="text" name="author_name" id="author_name" maxlength=300 value="J.G. Ballard">
+            <label for="author-name">Author name:</label>
+            <input type="text" name="author-name" id="author-name" maxlength=300 value="J.G. Ballard">
             <br>
             <label for="pages">Page count:</label>
             <input type="number" name="pages" id="pages" max=2000 min=1 value=329>

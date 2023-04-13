@@ -44,7 +44,7 @@ button {
     margin: 15px 0px;
 }
 
-#popUp {
+#pop-up {
     display: none; 
     position: fixed; 
     z-index: 1; 

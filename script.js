@@ -38,7 +38,7 @@ let myLibrary = [];
 const tableHeaderRow = document.querySelector('thead');
 const table = document.querySelector('#library-table');
 const bookForm = document.querySelector('#library-form');
-const popUpForm = document.getElementById('popUp');
+const popUpForm = document.getElementById('pop-up');
 
 // Add event listener to close the popUpForm with escape key.
 
